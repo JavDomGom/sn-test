@@ -13,7 +13,7 @@ func DeleteMsg(ID string, UserID string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*15)
 	defer cancel()
 
-	db := MongoCN.Database("test")
+	db := MongoCN.Database(DBname)
 	col := db.Collection("messages")
 
 	objID, _ := primitive.ObjectIDFromHex(ID)

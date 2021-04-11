@@ -8,9 +8,14 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-/* MongoCN is the connection object to the database.*/
-var MongoCN = ConnectDB()
-var clientOptions = options.Client().ApplyURI("mongodb+srv://<userName>:<password>@cluster0.9emsq.mongodb.net/<databaseName>?retryWrites=true&w=majority")
+var (
+	/* MongoCN is the connection object to the database.*/
+	MongoCN       = ConnectDB()
+	DBname        = "XXX"
+	DBuser        = "XXX"
+	DBpass        = "XXX"
+	clientOptions = options.Client().ApplyURI("mongodb+srv://" + DBuser + ":" + DBpass + "@cluster0.9emsq.mongodb.net/" + DBname + "?retryWrites=true&w=majority")
+)
 
 /* ConnectDB Function to connect to the database.*/
 func ConnectDB() *mongo.Client {

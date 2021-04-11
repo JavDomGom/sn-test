@@ -14,7 +14,7 @@ func ModifyProfile(u models.User, ID string) (bool, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
 
-	db := MongoCN.Database("test")
+	db := MongoCN.Database(DBname)
 	col := db.Collection("users")
 
 	profile := make(map[string]interface{})

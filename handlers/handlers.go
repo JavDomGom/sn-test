@@ -28,6 +28,13 @@ func Handlers() {
 	router.HandleFunc("/uploadBanner", middleware.CheckDB(middleware.ValidateJWT(routers.UploadBanner))).Methods("POST")
 	router.HandleFunc("/getBanner", middleware.CheckDB(routers.GetBanner)).Methods("GET")
 
+	router.HandleFunc("/newFollow", middleware.CheckDB(middleware.ValidateJWT(routers.NewFollow))).Methods("POST")
+	router.HandleFunc("/removeFollow", middleware.CheckDB(middleware.ValidateJWT(routers.RemoveFollow))).Methods("DELETE")
+	router.HandleFunc("/checkFollow", middleware.CheckDB(middleware.ValidateJWT(routers.CheckFollow))).Methods("GET")
+
+	router.HandleFunc("/getUsers", middleware.CheckDB(middleware.ValidateJWT(routers.GetUsers))).Methods("GET")
+	router.HandleFunc("/getFollowersMsg", middleware.CheckDB(middleware.ValidateJWT(routers.GetFollowersMsg))).Methods("GET")
+
 	PORT := os.Getenv("PORT")
 	if PORT == "" {
 		PORT = "8080"

@@ -14,7 +14,7 @@ func GetProfile(ID string) (models.User, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*15)
 	defer cancel()
 
-	db := MongoCN.Database("test")
+	db := MongoCN.Database(DBname)
 	col := db.Collection("users")
 
 	var profile models.User

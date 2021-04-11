@@ -15,7 +15,7 @@ func InsertMsg(t models.RecordMsg) (string, bool, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
 
-	db := MongoCN.Database("test")
+	db := MongoCN.Database(DBname)
 	col := db.Collection("messages")
 
 	register := bson.M{

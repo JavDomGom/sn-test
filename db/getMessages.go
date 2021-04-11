@@ -13,7 +13,7 @@ import (
 func GetMessages(ID string, page int64) ([]*models.ReturnMsg, bool) {
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
-	db := MongoCN.Database("test")
+	db := MongoCN.Database(DBname)
 	col := db.Collection("messages")
 
 	var messages []*models.ReturnMsg
