@@ -19,9 +19,10 @@ func InsertMsg(t models.RecordMsg) (string, bool, error) {
 	col := db.Collection("messages")
 
 	register := bson.M{
-		"userId":   t.UserID,
-		"message":  t.Message,
-		"datetime": t.Datetime,
+		"userId":             t.UserID,
+		"message":            t.Message,
+		"datetime":           t.Datetime,
+		"inReplyToMessageId": t.InReplyToMessageID,
 	}
 	result, err := col.InsertOne(ctx, register)
 	if err != nil {

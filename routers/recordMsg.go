@@ -12,12 +12,18 @@ import (
 /* RecordMsg record a message in database. */
 func RecordMsg(w http.ResponseWriter, r *http.Request) {
 	var message models.Msg
+
 	err := json.NewDecoder(r.Body).Decode(&message)
+	if err != nil {
+		http.Error(w, "Error in the received data. "+err.Error(), 400)
+		return
+	}
 
 	msg := models.RecordMsg{
-		UserID:   IDUser,
-		Message:  message.Message,
-		Datetime: time.Now(),
+		UserID:             IDUser,
+		Message:            message.Message,
+		Datetime:           time.Now(),
+		InReplyToMessageID: message.InReplyToMessageID,
 	}
 
 	_, status, err := db.InsertMsg(msg)

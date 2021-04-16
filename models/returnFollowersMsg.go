@@ -12,8 +12,9 @@ type ReturnFollowersMsg struct {
 	UserID         string             `bson:"userId" json:"userId,omitempty"`
 	UserFollowedID string             `bson:"userFollowedID" json:"userFollowedID,omitempty"`
 	Msg            struct {
-		Message  string    `bson:"message" json:"message,omitempty"`
-		Datetime time.Time `bson:"datetime" json:"datetime,omitempty"`
-		ID       string    `bson:"_id" json:"_id,omitempty"`
+		Message            string    `bson:"message" json:"message,omitempty"`
+		InReplyToMessageID string    `bson:"inReplyToMessageId" json:"inReplyToMessageId,omitempty"`
+		Datetime           time.Time `bson:"datetime" json:"datetime,omitempty"`
+		ID                 string    `bson:"_id" json:"_id,omitempty"`
 	}
 }
