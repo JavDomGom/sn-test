@@ -34,6 +34,7 @@ func Handlers() {
 
 	router.HandleFunc("/getUsers", middleware.CheckDB(middleware.ValidateJWT(routers.GetUsers))).Methods("GET")
 	router.HandleFunc("/getFollowersMsg", middleware.CheckDB(middleware.ValidateJWT(routers.GetFollowersMsg))).Methods("GET")
+	router.HandleFunc("/getMsg", middleware.CheckDB(middleware.ValidateJWT(routers.GetMsg))).Methods("GET")
 
 	PORT := os.Getenv("PORT")
 	if PORT == "" {
