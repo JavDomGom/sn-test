@@ -43,14 +43,14 @@ func ModifyProfile(u models.User, ID string) (bool, error) {
 		profile["webSite"] = u.WebSite
 	}
 
-	updtString := bson.M{
+	update := bson.M{
 		"$set": profile,
 	}
 
 	objID, _ := primitive.ObjectIDFromHex(ID)
 	filter := bson.M{"_id": bson.M{"$eq": objID}}
 
-	_, err := col.UpdateOne(ctx, filter, updtString)
+	_, err := col.UpdateOne(ctx, filter, update)
 	if err != nil {
 		return false, err
 	}
