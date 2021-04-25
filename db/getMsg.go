@@ -20,11 +20,11 @@ func GetMsg(ID string) (models.ReturnMsg, bool) {
 	var msg models.ReturnMsg
 	objID, _ := primitive.ObjectIDFromHex(ID)
 
-	condition := bson.M{
+	filter := bson.M{
 		"_id": objID,
 	}
 
-	err := col.FindOne(ctx, condition).Decode(&msg)
+	err := col.FindOne(ctx, filter).Decode(&msg)
 	if err != nil {
 		return msg, false
 	}

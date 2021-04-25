@@ -36,6 +36,9 @@ func Handlers() {
 	router.HandleFunc("/getFollowersMsg", middleware.CheckDB(middleware.ValidateJWT(routers.GetFollowersMsg))).Methods("GET")
 	router.HandleFunc("/getMsg", middleware.CheckDB(middleware.ValidateJWT(routers.GetMsg))).Methods("GET")
 
+	router.HandleFunc("/like", middleware.CheckDB(middleware.ValidateJWT(routers.NewLike))).Methods("POST")
+	router.HandleFunc("/unlike", middleware.CheckDB(middleware.ValidateJWT(routers.RemoveLike))).Methods("DELETE")
+
 	PORT := os.Getenv("PORT")
 	if PORT == "" {
 		PORT = "8080"

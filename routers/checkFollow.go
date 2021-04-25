@@ -11,6 +11,10 @@ import (
 /* CheckFollow Check for relation beetween two users in database. */
 func CheckFollow(w http.ResponseWriter, r *http.Request) {
 	ID := r.URL.Query().Get("id")
+	if len(ID) < 1 {
+		http.Error(w, "You must send the id parameter.", http.StatusBadRequest)
+		return
+	}
 
 	var t models.Follow
 	t.UserID = IDUser

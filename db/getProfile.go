@@ -20,11 +20,11 @@ func GetProfile(ID string) (models.User, error) {
 	var profile models.User
 	objID, _ := primitive.ObjectIDFromHex(ID)
 
-	condition := bson.M{
+	filter := bson.M{
 		"_id": objID,
 	}
 
-	err := col.FindOne(ctx, condition).Decode(&profile)
+	err := col.FindOne(ctx, filter).Decode(&profile)
 	profile.Password = ""
 	if err != nil {
 		return profile, err

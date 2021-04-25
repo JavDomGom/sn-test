@@ -9,10 +9,9 @@ import (
 
 /* Profile extract values from a profile. */
 func Profile(w http.ResponseWriter, r *http.Request) {
-
 	ID := r.URL.Query().Get("id")
 	if len(ID) < 1 {
-		http.Error(w, "You must send the ID parameter", http.StatusBadRequest)
+		http.Error(w, "You must send the id parameter", http.StatusBadRequest)
 		return
 	}
 

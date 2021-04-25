@@ -16,13 +16,13 @@ func CheckFollow(t models.Follow) (bool, error) {
 	db := MongoCN.Database(DBname)
 	col := db.Collection("follows")
 
-	condition := bson.M{
+	filter := bson.M{
 		"userId":         t.UserID,
 		"userFollowedID": t.UserFollowedID,
 	}
 
 	var result models.Follow
-	err := col.FindOne(ctx, condition).Decode(&result)
+	err := col.FindOne(ctx, filter).Decode(&result)
 	if err != nil {
 		return false, err
 	}

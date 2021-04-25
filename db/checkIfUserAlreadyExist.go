@@ -17,11 +17,11 @@ func CheckIfUserAlreadyExists(email string) (models.User, bool, string) {
 	db := MongoCN.Database(DBname)
 	col := db.Collection("users")
 
-	condition := bson.M{"email": email}
+	filter := bson.M{"email": email}
 
 	var result models.User
 
-	err := col.FindOne(ctx, condition).Decode(&result)
+	err := col.FindOne(ctx, filter).Decode(&result)
 	ID := result.ID.Hex()
 	if err != nil {
 		return result, false, ID

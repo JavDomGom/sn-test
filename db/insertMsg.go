@@ -11,7 +11,7 @@ import (
 )
 
 /* InsertMsg records a msg in database. */
-func InsertMsg(t models.RecordMsg) (string, bool, error) {
+func InsertMsg(msg models.RecordMsg) (string, bool, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
 
@@ -19,10 +19,10 @@ func InsertMsg(t models.RecordMsg) (string, bool, error) {
 	col := db.Collection("messages")
 
 	register := bson.M{
-		"userId":             t.UserID,
-		"message":            t.Message,
-		"datetime":           t.Datetime,
-		"inReplyToMessageId": t.InReplyToMessageID,
+		"userId":             msg.UserID,
+		"message":            msg.Message,
+		"datetime":           msg.Datetime,
+		"inReplyToMessageId": msg.InReplyToMessageID,
 	}
 	result, err := col.InsertOne(ctx, register)
 	if err != nil {

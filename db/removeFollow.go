@@ -9,37 +9,37 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-/* RemoveFollow remove a specific relation. */
-func RemoveFollow(t models.Follow) (bool, error) {
+/* RemoveFollow remove a specific follow. */
+func RemoveFollow(follow models.Follow) (bool, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
 
 	db := MongoCN.Database(DBname)
 	col := db.Collection("follows")
 
-	_, err := col.DeleteOne(ctx, t)
+	_, err := col.DeleteOne(ctx, follow)
 	if err != nil {
 		return false, err
 	}
 
 	// Get unfollowed and unfollower profiles to update their followers and followed counters.
-	usersCol := db.Collection("users")
+	col = db.Collection("users")
 
 	var (
 		unfollowedProfile models.User
 		unfollowerProfile models.User
 	)
 
-	followedObjID, _ := primitive.ObjectIDFromHex(t.UserFollowedID)
-	followerObjID, _ := primitive.ObjectIDFromHex(t.UserID)
+	followedObjID, _ := primitive.ObjectIDFromHex(follow.UserFollowedID)
+	followerObjID, _ := primitive.ObjectIDFromHex(follow.UserID)
 
 	// Get followed profile.
-	condition := bson.M{"_id": followedObjID}
-	usersCol.FindOne(ctx, condition).Decode(&unfollowedProfile)
+	filter := bson.M{"_id": followedObjID}
+	col.FindOne(ctx, filter).Decode(&unfollowedProfile)
 
 	// Get follower profile.
-	condition = bson.M{"_id": followerObjID}
-	usersCol.FindOne(ctx, condition).Decode(&unfollowerProfile)
+	filter = bson.M{"_id": followerObjID}
+	col.FindOne(ctx, filter).Decode(&unfollowerProfile)
 
 	// Decrement -1 followed count in unfollowerProfile.
 	update := bson.D{{Key: "$set",
@@ -48,9 +48,9 @@ func RemoveFollow(t models.Follow) (bool, error) {
 		},
 	}}
 
-	filter := bson.M{"_id": bson.M{"$eq": unfollowerProfile.ID}}
+	filter = bson.M{"_id": bson.M{"$eq": unfollowerProfile.ID}}
 
-	_, err = usersCol.UpdateOne(ctx, filter, update)
+	_, err = col.UpdateOne(ctx, filter, update)
 	if err != nil {
 		return false, err
 	}
@@ -64,7 +64,7 @@ func RemoveFollow(t models.Follow) (bool, error) {
 
 	filter = bson.M{"_id": bson.M{"$eq": unfollowedProfile.ID}}
 
-	_, err = usersCol.UpdateOne(ctx, filter, update)
+	_, err = col.UpdateOne(ctx, filter, update)
 	if err != nil {
 		return false, err
 	}

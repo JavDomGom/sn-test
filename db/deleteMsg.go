@@ -18,11 +18,11 @@ func DeleteMsg(ID string, UserID string) error {
 
 	objID, _ := primitive.ObjectIDFromHex(ID)
 
-	condition := bson.M{
+	filter := bson.M{
 		"_id":    objID,
 		"userId": UserID,
 	}
 
-	_, err := col.DeleteOne(ctx, condition)
+	_, err := col.DeleteOne(ctx, filter)
 	return err
 }

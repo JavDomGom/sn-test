@@ -13,4 +13,5 @@ type ReturnMsg struct {
 	Message            string             `bson:"message" json:"message,omitempty"`
 	Datetime           time.Time          `bson:"datetime" json:"datetime,omitempty"`
 	InReplyToMessageID string             `bson:"inReplyToMessageId" json:"inReplyToMessageId,omitempty"`
+	LikesCount         uint64             `bson:"likesCount" json:"likesCount"`
 }

@@ -10,7 +10,6 @@ import (
 
 /* GetUsers Get a list with all users. */
 func GetUsers(w http.ResponseWriter, r *http.Request) {
-
 	userType := r.URL.Query().Get("userType")
 	page := r.URL.Query().Get("page")
 	search := r.URL.Query().Get("search")

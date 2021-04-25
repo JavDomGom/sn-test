@@ -9,37 +9,37 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-/* InsertFollow record relation in database. */
-func InsertFollow(t models.Follow) (bool, error) {
+/* InsertFollow record follow in database. */
+func InsertFollow(follow models.Follow) (bool, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
 
 	db := MongoCN.Database(DBname)
 	col := db.Collection("follows")
 
-	_, err := col.InsertOne(ctx, t)
+	_, err := col.InsertOne(ctx, follow)
 	if err != nil {
 		return false, err
 	}
 
 	// Get followed and follower profiles to update their followers and followed counters.
-	usersCol := db.Collection("users")
+	col = db.Collection("users")
 
 	var (
 		followedProfile models.User
 		followerProfile models.User
 	)
 
-	followedObjID, _ := primitive.ObjectIDFromHex(t.UserFollowedID)
-	followerObjID, _ := primitive.ObjectIDFromHex(t.UserID)
+	followedObjID, _ := primitive.ObjectIDFromHex(follow.UserFollowedID)
+	followerObjID, _ := primitive.ObjectIDFromHex(follow.UserID)
 
 	// Get followed profile.
-	condition := bson.M{"_id": followedObjID}
-	usersCol.FindOne(ctx, condition).Decode(&followedProfile)
+	filter := bson.M{"_id": followedObjID}
+	col.FindOne(ctx, filter).Decode(&followedProfile)
 
 	// Get follower profile.
-	condition = bson.M{"_id": followerObjID}
-	usersCol.FindOne(ctx, condition).Decode(&followerProfile)
+	filter = bson.M{"_id": followerObjID}
+	col.FindOne(ctx, filter).Decode(&followerProfile)
 
 	// Increment +1 followed count in followerProfile.
 	update := bson.D{{Key: "$set",
@@ -48,9 +48,8 @@ func InsertFollow(t models.Follow) (bool, error) {
 		},
 	}}
 
-	filter := bson.M{"_id": bson.M{"$eq": followerProfile.ID}}
-
-	_, err = usersCol.UpdateOne(ctx, filter, update)
+	filter = bson.M{"_id": bson.M{"$eq": followerProfile.ID}}
+	_, err = col.UpdateOne(ctx, filter, update)
 	if err != nil {
 		return false, err
 	}
@@ -63,8 +62,7 @@ func InsertFollow(t models.Follow) (bool, error) {
 	}}
 
 	filter = bson.M{"_id": bson.M{"$eq": followedProfile.ID}}
-
-	_, err = usersCol.UpdateOne(ctx, filter, update)
+	_, err = col.UpdateOne(ctx, filter, update)
 	if err != nil {
 		return false, err
 	}

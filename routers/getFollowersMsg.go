@@ -10,7 +10,6 @@ import (
 
 /* GetFollowersMsg Get all messages from my followers. */
 func GetFollowersMsg(w http.ResponseWriter, r *http.Request) {
-
 	if len(r.URL.Query().Get("page")) < 1 {
 		http.Error(w, "You must send the page parameter.", http.StatusBadRequest)
 		return

@@ -18,7 +18,7 @@ func GetMessages(ID string, page int64) ([]*models.ReturnMsg, bool) {
 
 	var messages []*models.ReturnMsg
 
-	condition := bson.M{
+	filter := bson.M{
 		"userId": ID,
 	}
 
@@ -27,7 +27,7 @@ func GetMessages(ID string, page int64) ([]*models.ReturnMsg, bool) {
 	opts.SetSort(bson.D{{Key: "datetime", Value: -1}})
 	opts.SetSkip((page - 1) * 20)
 
-	cursor, err := col.Find(ctx, condition, opts)
+	cursor, err := col.Find(ctx, filter, opts)
 	if err != nil {
 		return messages, false
 	}

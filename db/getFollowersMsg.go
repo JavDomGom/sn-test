@@ -18,21 +18,21 @@ func GetFollowersMsg(ID string, page int) ([]models.ReturnFollowersMsg, bool) {
 
 	skip := (page - 1) * 20
 
-	conditions := make([]bson.M, 0)
-	conditions = append(conditions, bson.M{"$match": bson.M{"userId": ID}})
-	conditions = append(conditions, bson.M{
+	filter := make([]bson.M, 0)
+	filter = append(filter, bson.M{"$match": bson.M{"userId": ID}})
+	filter = append(filter, bson.M{
 		"$lookup": bson.M{
 			"from":         "messages",
 			"localField":   "userFollowedID",
 			"foreignField": "userId",
 			"as":           "msg",
 		}})
-	conditions = append(conditions, bson.M{"$unwind": "$msg"})
-	conditions = append(conditions, bson.M{"$sort": bson.M{"msg.datetime": -1}})
-	conditions = append(conditions, bson.M{"$skip": skip})
-	conditions = append(conditions, bson.M{"$limit": 20})
+	filter = append(filter, bson.M{"$unwind": "$msg"})
+	filter = append(filter, bson.M{"$sort": bson.M{"msg.datetime": -1}})
+	filter = append(filter, bson.M{"$skip": skip})
+	filter = append(filter, bson.M{"$limit": 20})
 
-	cursor, err := col.Aggregate(ctx, conditions)
+	cursor, err := col.Aggregate(ctx, filter)
 	var result []models.ReturnFollowersMsg
 	err = cursor.All(ctx, &result)
 	if err != nil {
