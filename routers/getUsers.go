@@ -8,10 +8,21 @@ import (
 	"github.com/JavDomGom/sn-test/db"
 )
 
-/* GetUsers Get a list with all users. */
+/* GetUsers returns a list with all users. */
 func GetUsers(w http.ResponseWriter, r *http.Request) {
 	userType := r.URL.Query().Get("userType")
+	if len(userType) < 1 {
+		http.Error(w, "You must send the userType parameter.", http.StatusBadRequest)
+		return
+	}
+
 	page := r.URL.Query().Get("page")
+	if len(page) < 1 {
+		http.Error(w, "You must send the page parameter.", http.StatusBadRequest)
+		return
+	}
+
+	// This parameter is optional.
 	search := r.URL.Query().Get("search")
 
 	pagTmp, err := strconv.Atoi(page)

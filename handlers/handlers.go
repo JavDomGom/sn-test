@@ -38,6 +38,7 @@ func Handlers() {
 
 	router.HandleFunc("/like", middleware.CheckDB(middleware.ValidateJWT(routers.NewLike))).Methods("POST")
 	router.HandleFunc("/unlike", middleware.CheckDB(middleware.ValidateJWT(routers.RemoveLike))).Methods("DELETE")
+	router.HandleFunc("/getLikes", middleware.CheckDB(middleware.ValidateJWT(routers.GetLikes))).Methods("GET")
 
 	PORT := os.Getenv("PORT")
 	if PORT == "" {
