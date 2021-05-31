@@ -50,7 +50,7 @@ func GetAllUsers(ID string, page int64, search string, userType string) ([]*mode
 
 		include = false
 
-		found, err = CheckFollow(r)
+		found, _ = CheckFollow(r)
 		if userType == "noFollow" && !found {
 			include = true
 		}

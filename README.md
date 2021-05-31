@@ -17,6 +17,13 @@ SN Test may require the following tools to be installed beforehand:
 ~$ go get github.com/dgrijalva/jwt-go
 ```
 
+To apply:
+
+```bash
+~$ go mod init
+~$ go mod tidy
+```
+
 ## MongoDB database and collections
 
 SN Test API requires having the following database and collections previously created

@@ -32,9 +32,9 @@ func GetFollowersMsg(ID string, page int) ([]models.ReturnFollowersMsg, bool) {
 	filter = append(filter, bson.M{"$skip": skip})
 	filter = append(filter, bson.M{"$limit": 20})
 
-	cursor, err := col.Aggregate(ctx, filter)
+	cursor, _ := col.Aggregate(ctx, filter)
 	var result []models.ReturnFollowersMsg
-	err = cursor.All(ctx, &result)
+	err := cursor.All(ctx, &result)
 	if err != nil {
 		return result, false
 	}

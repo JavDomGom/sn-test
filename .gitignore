@@ -157,3 +157,4 @@ uploads/avatars/*
 uploads/banners/*
 db/connectDB.go
 local/*
+main
